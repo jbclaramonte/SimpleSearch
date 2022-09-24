@@ -7,8 +7,6 @@ import com.simplesearch.core.IndexSearcher.SearchResult;
 import com.simplesearch.core.Indexer;
 import com.simplesearch.core.SimpleRegexTokenizer;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class CliApp {
@@ -23,9 +21,17 @@ public class CliApp {
     FileIndexer fileIndexer = new FileIndexer(new Indexer(index, tokenizer));
 
     File[] files = indexableDirectory.listFiles();
-    Arrays.stream(Objects.requireNonNull(files)).forEach(fileIndexer::index);
+    int indexedFilesCount = 0;
+    for (int i=0; i < files.length; i++) {
+      if (files[i].isFile()) {
+        fileIndexer.index(files[i]);
+        indexedFilesCount++;
+      }
+      System.out.printf("\r%s%%", 100*i/files.length);
+    }
+    System.out.printf("\r");
 
-    System.out.println("" + files.length + " files read in directory " + indexableDirectory.getPath());
+    System.out.println(indexedFilesCount + " files read in directory " + indexableDirectory.getPath());
 
     IndexSearcher indexSearcher = new IndexSearcher(index, tokenizer);
 
