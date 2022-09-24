@@ -11,13 +11,13 @@ public class SearchResultPrinter {
 
   public SearchResultPrinter(SearchResult searchResult) {
     for (var entry : searchResult.getContentIdFoundTokensMap().entrySet()) {
-      float score = computeScore(entry.getValue().size(), searchResult.getSearchedTokens().size());
+      int score = computeScore(entry.getValue().size(), searchResult.getSearchedTokens().size());
       resultLines.add(new ResultLine(entry.getKey(), score));
     }
   }
 
-  private float computeScore(int tokenFoundSize, int searchedTokenSize) {
-    return tokenFoundSize / (float) searchedTokenSize;
+  private int computeScore(int tokenFoundSize, int searchedTokenSize) {
+    return (int)Math.ceil(100*(tokenFoundSize / (float) searchedTokenSize));
   }
 
   @Override
@@ -47,7 +47,7 @@ public class SearchResultPrinter {
     return firstLines;
   }
 
-  public record ResultLine(String filename, float score) implements Comparable<ResultLine> {
+  public record ResultLine(String filename, int score) implements Comparable<ResultLine> {
 
     @Override
     public int compareTo(ResultLine o) {
@@ -61,7 +61,7 @@ public class SearchResultPrinter {
 
     @Override
     public String toString() {
-      return filename + ":" + score * 100 + "%";
+      return filename + ":" + score + "%";
     }
   }
 }
