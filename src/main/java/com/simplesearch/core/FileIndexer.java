@@ -14,6 +14,9 @@ public class FileIndexer {
   }
 
   public void index(File file) {
+    if (file.isDirectory()) {
+      return;
+    }
     try(BufferedReader reader = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
       String line = reader.readLine();
       while (line != null) {
