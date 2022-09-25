@@ -8,5 +8,5 @@ mvn package
 Then run it with this command:
 
 ```
-java -jar target/SimpleSearch-1.0-SNAPSHOT.jar <relative path to scan>
+java -jar target/SimpleSearch-1.0-SNAPSHOT.jar <path to scan>
 ```
